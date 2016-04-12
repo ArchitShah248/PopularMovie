@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.portfolio.archit.popularmovie.activity.DetailActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/imgVBackdrop"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/tvMovieTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/imgVBackdrop"
+                android:layout_centerHorizontal="true"
+                android:background="@color/bg_color_title"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="8dp"
+                android:textColor="@color/text_color_white"/>
+
+
+            <TextView
+                android:id="@+id/tvRatingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgVBackdrop"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="@string/rating_title"/>
+
+            <TextView
+                android:id="@+id/tvReleaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/imgVBackdrop"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="@string/release_date_title"/>
+
+            <TextView
+                android:id="@+id/tvMovieOverView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvRatingTitle"
+                android:padding="8dp"/>
+
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

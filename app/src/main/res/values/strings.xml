@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Popular Movie</string>
-    <string name="no_review">Overview is not available.</string>
+    <string name="no_overview">Overview is not available.</string>
     <string name="not_available">N/A</string>
     <string name="loading">Loading...</string>
     <string name="no_internet">Internet is not available.</string>
@@ -10,25 +10,24 @@
 
     <string name="sort_title">Sort : </string>
     <string-array name="sort_properties_values">
-        <item>popularity.desc</item>
-        <item>popularity.asc</item>
-        <item>vote_average.desc</item>
-        <item>vote_average.asc</item>
-        <!--<item>release_date.desc</item>-->
-        <!--<item>release_date.asc</item>-->
+        <item>/movie/popular</item>
+        <item>/movie/top_rated</item>
     </string-array>
 
     <string-array name="sort_properties">
-        <item>Popularity Desc</item>
-        <item>Popularity Asc</item>
-        <item>Vote Desc</item>
-        <item>Vote Asc</item>
-        <!--<item>Release Date Desc</item>-->
-        <!--<item>Release Date Asc</item>-->
+        <item>Popular</item>
+        <item>Top rated</item>
     </string-array>
 
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="show_reviews">Show Reviews</string>
+    <string name="no_reviews">No reviews available</string>
+
+
+    <string name="trailer">Trailers</string>
+
 
 </resources>

@@ -6,7 +6,7 @@ package com.portfolio.archit.popularmovie.data;
 public final class AppConstants {
 
     public static final String DUMMY_API_MSG = "YOUR_MOVIE_DB_API_KEY";
-    public static final String MOVIE_DB_API_KEY = "YOUR_MOVIE_DB_API_KEY";
+    public static final String MOVIE_DB_API_KEY = "63a8c4ff6ea88bc52cd595489b07a691";
 
     public static final String INTENT_KEY_MOVIE_DETAIL = "intent_key_movie_detail";
 

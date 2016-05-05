@@ -1,11 +1,11 @@
 package com.portfolio.archit.popularmovie.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -20,16 +20,17 @@ import com.portfolio.archit.popularmovie.utilities.Utils;
 import java.util.ArrayList;
 
 /**
- * Created by Archit Shah on 4/9/2016.
+ * Created by Archit Shah on 5/1/2016.
  */
-public class MovieGridAdapter extends BaseAdapter {
+public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.ViewHolder> {
 
-    private static final String TAG = MovieGridAdapter.class.getSimpleName();
+    private static final String TAG = MovieRecyclerAdapter.class.getSimpleName();
     private Context mContext;
     private ImageLoader imageLoader;
     private LayoutInflater layoutInflater;
     private ArrayList<Movie> movieArrayList = new ArrayList<>();
     private int currentPageIndex = 1;
+
 
     public interface OnGridItemClickedListener {
         int getCurrentPage();
@@ -45,54 +46,24 @@ public class MovieGridAdapter extends BaseAdapter {
         this.onGridItemClickedListener = onGridItemClickedListener;
     }
 
-    public MovieGridAdapter(Context mContext) {
+    public MovieRecyclerAdapter(Context mContext) {
         this.mContext = mContext;
         layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = VolleyHelper.getInstance(mContext).getImageLoader();
     }
 
     @Override
-    public int getCount() {
-        return movieArrayList.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View convertView = layoutInflater.inflate(R.layout.grid_cell_poster_image, null);
+
+        ViewHolder viewHolder = new ViewHolder(convertView);
+
+        return viewHolder;
     }
 
     @Override
-    public Object getItem(int position) {
-
-
-        return movieArrayList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    private static class ViewHolder {
-        public NetworkImageView imgVMoviePoster;
-        public TextView tvMovieName;
-
-        public ViewHolder(View parent) {
-            imgVMoviePoster = (NetworkImageView) parent.findViewById(R.id.imgVMoviePoster);
-            tvMovieName = (TextView) parent.findViewById(R.id.tvMovieTitle);
-        }
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-
-        ViewHolder viewHolder = null;
-
-        if (convertView == null) {
-
-            convertView = layoutInflater.inflate(R.layout.grid_cell_poster_image, null);
-
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
         final Movie movie = movieArrayList.get(position);
         viewHolder.tvMovieName.setText(movie.getTitle());
@@ -104,7 +75,7 @@ public class MovieGridAdapter extends BaseAdapter {
             viewHolder.imgVMoviePoster.setImageResource(R.drawable.no_preview_available);
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onGridItemClickedListener != null) {
@@ -114,16 +85,34 @@ public class MovieGridAdapter extends BaseAdapter {
         });
         if (onGridItemClickedListener != null) {
             int nextPageIndex = onGridItemClickedListener.getCurrentPage() + 1;
-            Log.v(TAG, "Page: " + nextPageIndex + " Current page: " + currentPageIndex + " Item Posi: "
-                    + position + " Size: " + movieArrayList.size());
+            Log.v(TAG, "Page: " + nextPageIndex + " Current page: " + currentPageIndex + " Item Posi: " + position + " Size: " + movieArrayList.size());
             if (currentPageIndex < AppConstants.ALLOWED_MAX_PAGES && currentPageIndex != nextPageIndex
                     && movieArrayList.size() > 0 && movieArrayList.size() == (position + 1)) {
                 Log.v(TAG, "Page scrolled to end. Posi: " + position);
                 onGridItemClickedListener.onScrolledToLast(position, nextPageIndex);
             }
         }
-        return convertView;
     }
+
+    @Override
+    public int getItemCount() {
+        return movieArrayList.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public View root;
+        public NetworkImageView imgVMoviePoster;
+        public TextView tvMovieName;
+
+        public ViewHolder(View parent) {
+            super(parent);
+            root = parent;
+            imgVMoviePoster = (NetworkImageView) parent.findViewById(R.id.imgVMoviePoster);
+            tvMovieName = (TextView) parent.findViewById(R.id.tvMovieTitle);
+        }
+    }
+
 
     public void setDataList(int pageIndex, ArrayList<Movie> list) {
         movieArrayList = list;

@@ -1,0 +1,85 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.portfolio.archit.popularmovie.fragments.MovieDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <RelativeLayout
+                    android:id="@+id/rlContainerPoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp">
+
+                    <com.android.volley.toolbox.NetworkImageView
+                        android:id="@+id/imgVBackdrop"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:scaleType="centerCrop"/>
+
+                    <ImageView
+                        android:id="@+id/imgVPlayTrailer"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/play_bg"
+                        android:src="@drawable/play"/>
+
+                    <TextView
+                        android:id="@+id/tvMovieTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/imgVBackdrop"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/bg_color_title"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:padding="8dp"
+                        android:textColor="@color/text_color_white"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvRatingTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlContainerPoster"
+                    android:padding="8dp"
+                    android:text="@string/rating_title"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvReleaseDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/rlContainerPoster"
+                    android:padding="8dp"
+                    android:text="@string/release_date_title"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvMovieOverView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvRatingTitle"
+                    android:padding="8dp"/>
+
+
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+
+</FrameLayout>

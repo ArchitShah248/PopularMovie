@@ -16,34 +16,29 @@ import com.portfolio.archit.popularmovie.R;
 /**
  *  Splash screen
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_splash);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
 
+        initView();
     }
 
-    @Override
+
     public void initView() {
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent movieIntent = new Intent(mContext,MainActivity.class);
+                Intent movieIntent = new Intent(SplashActivity.this,MainActivity.class);
                 startActivity(movieIntent);
                 finish();
             }
         },1500);
 
     }
-
-    @Override
-    public void setListeners() {
-
-    }
-
 
 }

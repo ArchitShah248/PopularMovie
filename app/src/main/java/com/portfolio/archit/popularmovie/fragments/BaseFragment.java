@@ -15,6 +15,7 @@ public abstract class BaseFragment extends Fragment {
 
     public Context mContext;
     protected View mView;
+    private boolean isAlreadyCreated = false;
 
     abstract protected void initView(Bundle savedInstanceState);
 
@@ -29,8 +30,14 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        if(savedInstanceState != null){
+            isAlreadyCreated = true;
+        }
         initView(savedInstanceState);
         setListeners();
+        isAlreadyCreated = false;
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
 }

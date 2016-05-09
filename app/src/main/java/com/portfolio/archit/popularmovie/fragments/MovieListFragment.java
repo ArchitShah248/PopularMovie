@@ -1,7 +1,5 @@
 package com.portfolio.archit.popularmovie.fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,10 +17,8 @@ import com.android.volley.VolleyError;
 import com.leo.simplearcloader.ArcConfiguration;
 import com.leo.simplearcloader.SimpleArcDialog;
 import com.portfolio.archit.popularmovie.R;
-import com.portfolio.archit.popularmovie.activity.DetailActivity;
 import com.portfolio.archit.popularmovie.adapter.EqualSpaceItemDecoration;
 import com.portfolio.archit.popularmovie.adapter.MovieRecyclerAdapter;
-import com.portfolio.archit.popularmovie.data.AppConstants;
 import com.portfolio.archit.popularmovie.data.AppURLs;
 import com.portfolio.archit.popularmovie.httphelper.GsonRequest;
 import com.portfolio.archit.popularmovie.httphelper.VolleyHelper;
@@ -39,20 +35,31 @@ import java.util.ArrayList;
 public class MovieListFragment extends BaseFragment {
 
     private static final String TAG = MovieListFragment.class.getSimpleName();
+    private static final String SAVED_INSTANCE_SELECTED_ITEM = "selected_item";
+    private static final String SAVED_INSTANCE_MOVIE_LIST = "movie_list";
+    private static final String SAVED_INSTANCE_MOVIE_SORT_INDEX = "movie_sort_index";
+    private static final String SAVED_INSTANCE_CURRENT_PAGE = "current_page";
+
 
     private RecyclerView gridView;
     private Spinner spinnerSort;
-    //    private MovieGridAdapter movieGridAdapter;
     private MovieRecyclerAdapter movieRecyclerAdapter;
     private ArrayList<Movie> movieArrayList = new ArrayList<>();
     private int currentPage = 1, retreivingPage = 1;
 
+    private int selectedSortPropIndex = 0;
     private String selectedSortProperty = "";
 
     private String[] sortingProperties;
 
     private SimpleArcDialog mDialog;
+    private boolean mIsMultiPane = false, isListLoadedOnCreate = false;
+    private int selectedListItem = 0;
 
+
+    public interface MovieListCallback {
+        void onItemClickListener(int pageIndex, int position, Movie movie);
+    }
 
     public MovieListFragment() {
         // Required empty public constructor
@@ -62,11 +69,18 @@ public class MovieListFragment extends BaseFragment {
     @Override
     protected void initView(Bundle savedInstanceState) {
 
+        if (savedInstanceState != null) {
+            selectedListItem = savedInstanceState.getInt(SAVED_INSTANCE_SELECTED_ITEM);
+            movieArrayList = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_MOVIE_LIST);
+            selectedSortPropIndex = savedInstanceState.getInt(SAVED_INSTANCE_MOVIE_SORT_INDEX);
+            currentPage = savedInstanceState.getInt(SAVED_INSTANCE_CURRENT_PAGE);
+            isListLoadedOnCreate = true;
+        }
+
         sortingProperties = getResources().getStringArray(R.array.sort_properties_values);
 
         gridView = (RecyclerView) mView.findViewById(R.id.gridMoviePoster);
-//        movieGridAdapter = new MovieGridAdapter(mContext);
-//        gridView.setAdapter(movieGridAdapter);
+
         movieRecyclerAdapter = new MovieRecyclerAdapter(mContext);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
         gridView.setLayoutManager(gridLayoutManager);
@@ -75,17 +89,17 @@ public class MovieListFragment extends BaseFragment {
 
 
         spinnerSort = (Spinner) mView.findViewById(R.id.spinnerSort);
-
-
+        spinnerSort.setSelection(selectedSortPropIndex);
+        selectedSortProperty = sortingProperties[selectedSortPropIndex];
         movieRecyclerAdapter.setDataList(currentPage, movieArrayList);
 
         mDialog = new SimpleArcDialog(mContext);
         mDialog.setConfiguration(new ArcConfiguration(mContext));
-
     }
 
     @Override
     protected void setListeners() {
+
         movieRecyclerAdapter.setOnGridItemClickedListener(new MovieRecyclerAdapter.OnGridItemClickedListener() {
             @Override
             public int getCurrentPage() {
@@ -94,12 +108,8 @@ public class MovieListFragment extends BaseFragment {
 
             @Override
             public void onGridItemSelected(int position, Movie movie) {
-
-                Intent intent = new Intent(mContext, DetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(AppConstants.INTENT_KEY_MOVIE_DETAIL, movie);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                selectedListItem = position;
+                ((MovieListCallback) getActivity()).onItemClickListener(position, currentPage, movie);
 
             }
 
@@ -116,9 +126,13 @@ public class MovieListFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String property = sortingProperties[position];
+                selectedSortPropIndex = position;
 
-                fetchData(1, property);
-
+                if (!isListLoadedOnCreate) {
+                    fetchData(1, property);
+                } else {
+                    isListLoadedOnCreate = false;
+                }
 
             }
 
@@ -146,17 +160,6 @@ public class MovieListFragment extends BaseFragment {
         return mView;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-
     private void fetchData(final int page, String sortProp) {
         if (Utils.isInternetAvailable(mContext)) {
             if (!sortProp.equalsIgnoreCase(selectedSortProperty)) {
@@ -179,6 +182,10 @@ public class MovieListFragment extends BaseFragment {
                             movieArrayList.addAll(movieList.getMovieArrayList());
                         } else {
                             movieArrayList = movieList.getMovieArrayList();
+                            if (mIsMultiPane) {
+                                Movie movie = movieArrayList.get(0);
+                                ((MovieListCallback) getActivity()).onItemClickListener(1, currentPage, movie);
+                            }
                         }
 
                         movieRecyclerAdapter.setDataList(currentPage, movieArrayList);
@@ -201,4 +208,16 @@ public class MovieListFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SAVED_INSTANCE_SELECTED_ITEM, selectedListItem);
+        outState.putParcelableArrayList(SAVED_INSTANCE_MOVIE_LIST, movieArrayList);
+        outState.putInt(SAVED_INSTANCE_MOVIE_SORT_INDEX, selectedSortPropIndex);
+        outState.putInt(SAVED_INSTANCE_CURRENT_PAGE, currentPage);
+    }
+
+    public void setMultiPane(boolean isMultiPane) {
+        this.mIsMultiPane = isMultiPane;
+    }
 }

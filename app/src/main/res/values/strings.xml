@@ -29,5 +29,10 @@
 
     <string name="trailer">Trailers</string>
 
+    <!-- Account type (for sync-adapter authenticator) -->
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">popularmovie.portfolio.archit.com</string>
+    <string name="content_authority">com.portfolio.archit.popularmovie</string>
+
 
 </resources>

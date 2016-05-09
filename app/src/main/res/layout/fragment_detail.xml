@@ -1,141 +1,164 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.portfolio.archit.popularmovie.fragments.MovieDetailFragment">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 tools:context="com.portfolio.archit.popularmovie.fragments.MovieDetailFragment">
 
-    <RelativeLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/movie_poster_height"
+        android:background="?colorPrimary">
 
-        <ScrollView
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginStart="72dp"
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <RelativeLayout
+                android:id="@+id/rlContainerPoster"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/movie_poster_height">
+
+                <com.android.volley.toolbox.NetworkImageView
+                    android:id="@+id/imgVBackdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/movie_poster_height"
+                    android:scaleType="centerCrop"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/movie_poster_height"
+                    android:background="@drawable/poster_title_bg"></View>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/appBarMovieDetail"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:contentInsetStart="72dp"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/arrow_left"/>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollViewMovieDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvMovieInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
 
                 <RelativeLayout
-                    android:id="@+id/rlContainerPoster"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp">
-
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/imgVBackdrop"
-                        android:layout_width="match_parent"
-                        android:layout_height="240dp"
-                        android:scaleType="centerCrop"/>
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tvMovieTitle"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvRatingTitle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/imgVBackdrop"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/bg_color_title"
-                        android:ellipsize="end"
-                        android:maxLines="2"
                         android:padding="8dp"
-                        android:textColor="@color/text_color_white"/>
+                        android:text="@string/rating_title"
+                        android:textStyle="bold"/>
 
+                    <TextView
+                        android:id="@+id/tvReleaseDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="8dp"
+                        android:text="@string/release_date_title"
+                        android:textStyle="bold"/>
                 </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvMovieInfo"
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvMovieOverview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cvMovieInfo"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:id="@+id/tvMovieOverView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rlContainerPoster"
-                    android:layout_margin="8dp">
+                    android:padding="8dp"
+                    android:textColor="@color/text_color"/>
+            </android.support.v7.widget.CardView>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvMovieTrailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cvMovieOverview"
+                android:layout_margin="8dp">
 
-                        <TextView
-                            android:id="@+id/tvRatingTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/rating_title"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/tvReleaseDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:padding="8dp"
-                            android:text="@string/release_date_title"
-                            android:textStyle="bold"/>
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvMovieOverview"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/cvMovieInfo"
-                    android:layout_margin="8dp">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tvMovieOverView"
+                        android:id="@+id/tvTrailerTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:textColor="@color/text_color"/>
-                </android.support.v7.widget.CardView>
+                        android:layout_margin="4dp"
+                        android:text="@string/trailer"
+                        android:textStyle="bold"/>
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvMovieTrailers"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycleviewMovieTrailers"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cvMovieTrailers"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:id="@+id/tvMovieReviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/cvMovieOverview"
-                    android:layout_margin="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvTrailerTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:text="@string/trailer"
-                            android:textStyle="bold"/>
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycleviewMovieTrailers"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp">
-
-                        </android.support.v7.widget.RecyclerView>
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/cvMovieTrailers"
-                    android:layout_margin="8dp">
-
-                    <TextView
-                        android:id="@+id/tvMovieReviews"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/review_icon"
-                        android:drawablePadding="8dp"
-                        android:gravity="center_vertical"
-                        android:padding="8dp"
-                        android:text="@string/show_reviews"
-                        android:textColor="@color/text_color"/>
-                </android.support.v7.widget.CardView>
+                    android:drawableLeft="@drawable/review_icon"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:text="@string/show_reviews"
+                    android:textColor="@color/text_color"/>
+            </android.support.v7.widget.CardView>
 
 
-            </RelativeLayout>
-        </ScrollView>
-    </RelativeLayout>
-</FrameLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

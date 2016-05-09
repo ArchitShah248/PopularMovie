@@ -1,33 +1,27 @@
-package com.portfolio.archit.popularmovie.fragments;
+package com.portfolio.archit.popularmovie.customviews;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
 import com.leo.simplearcloader.ArcConfiguration;
 import com.leo.simplearcloader.SimpleArcDialog;
 import com.portfolio.archit.popularmovie.R;
-import com.portfolio.archit.popularmovie.activity.DetailActivity;
 import com.portfolio.archit.popularmovie.adapter.EqualSpaceItemDecoration;
-import com.portfolio.archit.popularmovie.adapter.MovieRecyclerAdapter;
 import com.portfolio.archit.popularmovie.adapter.RecyclerItemListener;
 import com.portfolio.archit.popularmovie.adapter.ReviewsRecyclerAdapter;
 import com.portfolio.archit.popularmovie.data.AppConstants;
@@ -35,7 +29,6 @@ import com.portfolio.archit.popularmovie.data.AppURLs;
 import com.portfolio.archit.popularmovie.httphelper.GsonRequest;
 import com.portfolio.archit.popularmovie.httphelper.VolleyHelper;
 import com.portfolio.archit.popularmovie.model.Movie;
-import com.portfolio.archit.popularmovie.model.MovieList;
 import com.portfolio.archit.popularmovie.model.Review;
 import com.portfolio.archit.popularmovie.model.ReviewList;
 import com.portfolio.archit.popularmovie.utilities.Utils;
@@ -43,13 +36,16 @@ import com.portfolio.archit.popularmovie.utilities.Utils;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
+ * Created by Archit Shah on 5/7/2016.
  */
-public class ReviewsFragment extends BaseFragment {
+public class ReviewDialog extends DialogFragment {
 
-    private static final String TAG = ReviewsFragment.class.getSimpleName();
+    private static final String TAG = ReviewDialog.class.getSimpleName();
+
+    private Context mContext;
+    private View mView;
     private Toolbar appBarMovieReview;
+
     private RecyclerView recyclerView;
     private TextView tvNoReviewsAvailable;
     private Movie selectedMovie;
@@ -60,15 +56,16 @@ public class ReviewsFragment extends BaseFragment {
 
     private SimpleArcDialog mDialog;
 
-    public ReviewsFragment() {
-        // Required empty public constructor
+    public static ReviewDialog getInstance(Bundle args) {
+        ReviewDialog reviewDialog = new ReviewDialog();
+        reviewDialog.setArguments(args);
+        return reviewDialog;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mContext = getContext();
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
     }
 
@@ -77,20 +74,20 @@ public class ReviewsFragment extends BaseFragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_review_list, container, false);
         super.onCreateView(inflater, container, savedInstanceState);
+        initView(savedInstanceState);
+        setListeners();
         return mView;
     }
 
-
-    @Override
     protected void initView(Bundle savedInstanceState) {
 
         selectedMovie = getArguments().getParcelable(AppConstants.INTENT_KEY_MOVIE_DETAIL);
 
+        appBarMovieReview = (Toolbar) mView.findViewById(R.id.appBarMovieReview);
+        appBarMovieReview.setVisibility(View.GONE);
+
         tvNoReviewsAvailable = (TextView) mView.findViewById(R.id.tvNoReviewsAvailable);
         recyclerView = (RecyclerView) mView.findViewById(R.id.recycleviewMovieReviews);
-
-        appBarMovieReview = (Toolbar) mView.findViewById(R.id.appBarMovieReview);
-        appBarMovieReview.setTitle(selectedMovie.getTitle());
 
         reviewsRecyclerAdapter = new ReviewsRecyclerAdapter(mContext);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -107,16 +104,7 @@ public class ReviewsFragment extends BaseFragment {
         fetchData(currentPage);
     }
 
-    @Override
     protected void setListeners() {
-
-        appBarMovieReview.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("cek", "home selected");
-                getFragmentManager().popBackStack();
-            }
-        });
 
         reviewsRecyclerAdapter.setOnItemClickedListener(new RecyclerItemListener<Review>() {
             @Override
@@ -195,5 +183,4 @@ public class ReviewsFragment extends BaseFragment {
             Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
         }
     }
-
 }

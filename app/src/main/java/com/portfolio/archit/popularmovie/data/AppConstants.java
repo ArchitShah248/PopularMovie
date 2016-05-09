@@ -9,6 +9,8 @@ public final class AppConstants {
     public static final String MOVIE_DB_API_KEY = "***REMOVED***";
 
     public static final String INTENT_KEY_MOVIE_DETAIL = "intent_key_movie_detail";
+    public static final String INTENT_KEY_IS_MULTIPANE = "intent_key_is_multipane";
+
 
     public static final int ALLOWED_MAX_PAGES = 10;
 }

@@ -1,13 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.portfolio.archit.popularmovie.fragments.MovieListFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="400dp"
+                android:minWidth="300dp"
+                tools:context="com.portfolio.archit.popularmovie.fragments.MovieListFragment">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/appBarMovieReview"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:contentInsetStart="72dp"
+        app:layout_collapseMode="pin"
+        app:navigationIcon="@drawable/arrow_left"/>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleviewMovieReviews"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/appBarMovieReview"
         android:layout_margin="8dp">
 
     </android.support.v7.widget.RecyclerView>
@@ -16,9 +32,10 @@
         android:id="@+id/tvNoReviewsAvailable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/appBarMovieReview"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/no_reviews"
         android:textStyle="bold"/>
 
-</FrameLayout>
+</RelativeLayout>

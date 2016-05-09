@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +26,7 @@ import com.leo.simplearcloader.SimpleArcDialog;
 import com.portfolio.archit.popularmovie.R;
 import com.portfolio.archit.popularmovie.adapter.EqualSpaceItemDecoration;
 import com.portfolio.archit.popularmovie.adapter.TrailersRecyclerAdapter;
+import com.portfolio.archit.popularmovie.customviews.ReviewDialog;
 import com.portfolio.archit.popularmovie.data.AppConstants;
 import com.portfolio.archit.popularmovie.data.AppURLs;
 import com.portfolio.archit.popularmovie.httphelper.GsonRequest;
@@ -42,13 +47,16 @@ public class MovieDetailFragment extends BaseFragment {
     private static String TAG = MovieDetailFragment.class.getSimpleName();
 
     private ImageLoader imageLoader;
+    private Toolbar appBarMovieDetail;
     private Movie selectedMovie;
     private NetworkImageView imgVBackdrop;
-    private TextView tvMovieOverView, tvMovieTitle, tvRatingTitle, tvReleaseDate, tvMovieReviews;
+    private TextView tvMovieOverView,  tvRatingTitle, tvReleaseDate, tvMovieReviews;
     private RecyclerView recycleviewMovieTrailers;
+    private ScrollView scrollViewMovieDetail;
     private TrailersRecyclerAdapter trailersRecyclerAdapter;
     private ArrayList<Trailer> trailerArrayList = new ArrayList<>();
     private SimpleArcDialog mDialog;
+    private boolean mIsMultiPane = false;
 
     public MovieDetailFragment() {
         // Required empty public constructor
@@ -57,7 +65,12 @@ public class MovieDetailFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mContext = getContext();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mIsMultiPane = bundle.getBoolean(AppConstants.INTENT_KEY_IS_MULTIPANE);
+        }
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
 
@@ -70,26 +83,24 @@ public class MovieDetailFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     protected void initView(Bundle savedInstanceState) {
+
 
         mDialog = new SimpleArcDialog(mContext);
         selectedMovie = getArguments().getParcelable(AppConstants.INTENT_KEY_MOVIE_DETAIL);
 
         imageLoader = VolleyHelper.getInstance(mContext).getImageLoader();
 
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) mView.findViewById(R.id.collapsing_toolbar_layout);
+        collapsingToolbarLayout.setTitle(selectedMovie.getTitle());
+
+        appBarMovieDetail = (Toolbar) mView.findViewById(R.id.appBarMovieDetail);
+        if (mIsMultiPane) {
+            appBarMovieDetail.setVisibility(View.GONE);
+        }
+        scrollViewMovieDetail = (ScrollView) mView.findViewById(R.id.scrollViewMovieDetail);
         imgVBackdrop = (NetworkImageView) mView.findViewById(R.id.imgVBackdrop);
         tvMovieOverView = (TextView) mView.findViewById(R.id.tvMovieOverView);
-        tvMovieTitle = (TextView) mView.findViewById(R.id.tvMovieTitle);
         tvRatingTitle = (TextView) mView.findViewById(R.id.tvRatingTitle);
         tvReleaseDate = (TextView) mView.findViewById(R.id.tvReleaseDate);
         tvMovieReviews = (TextView) mView.findViewById(R.id.tvMovieReviews);
@@ -99,8 +110,6 @@ public class MovieDetailFragment extends BaseFragment {
             String url = AppURLs.MOVIE_DB_POSTER_BASE_URL + selectedMovie.getBackdropPath();
             imgVBackdrop.setImageUrl(url, imageLoader);
         }
-
-        tvMovieTitle.setText(selectedMovie.getOriginalTitle());
 
         if (!Utils.isStringEmpty(selectedMovie.getOverview())) {
             tvMovieOverView.setText(selectedMovie.getOverview());
@@ -137,6 +146,14 @@ public class MovieDetailFragment extends BaseFragment {
 
     @Override
     protected void setListeners() {
+
+        appBarMovieDetail.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
         trailersRecyclerAdapter.setOnItemClickedListener(new TrailersRecyclerAdapter.OnItemClickedListener() {
             @Override
             public void onGridItemSelected(int position, Trailer trailer) {
@@ -153,8 +170,14 @@ public class MovieDetailFragment extends BaseFragment {
                 ReviewsFragment reviewsFragment = new ReviewsFragment();
                 reviewsFragment.setArguments(bundle);
 
-                getFragmentManager().beginTransaction().replace(R.id.detail_container, reviewsFragment).addToBackStack("ReviewFragment").commit();
+                if (mIsMultiPane) {
+//                    getFragmentManager().beginTransaction().replace(R.id.detail_container, reviewsFragment).commit();
+                    ReviewDialog reviewDialog = ReviewDialog.getInstance(bundle);
+                    reviewDialog.show(getFragmentManager(), "ReviewDialog");
 
+                } else {
+                    getFragmentManager().beginTransaction().replace(R.id.detail_container, reviewsFragment).addToBackStack("ReviewFragment").commit();
+                }
             }
         });
     }

@@ -125,7 +125,7 @@ public class ReviewsFragment extends BaseFragment {
             }
 
             @Override
-            public void onGridItemSelected(int position, Review model) {
+            public void onRecyclerItemSelected(int position, Review model) {
 
             }
 

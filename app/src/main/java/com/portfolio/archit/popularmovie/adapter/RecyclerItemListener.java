@@ -7,6 +7,6 @@ import com.portfolio.archit.popularmovie.model.Movie;
  */
 public interface RecyclerItemListener<T> {
     int getCurrentPage();
-    void onGridItemSelected(int position, T model);
+    void onRecyclerItemSelected(int position, T model);
     void onScrolledToLast(int position, int nextPageIndex);
 }

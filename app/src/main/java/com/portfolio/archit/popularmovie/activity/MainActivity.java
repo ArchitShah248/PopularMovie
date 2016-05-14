@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
 
     private Context mContext;
     private RelativeLayout detailContainer;
+    private MovieListFragment movieListFragment;
     private boolean isMultiPane = false;
     private static final String SAVED_INSTANCE_IS_MULTIPANE = "saved_instance_is_multipane";
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
 
     private void initViews(Bundle savedInstanceState) {
 
-        MovieListFragment movieListFragment = (MovieListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie_list);
+        movieListFragment = (MovieListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie_list);
 
         detailContainer = (RelativeLayout) findViewById(R.id.detail_container);
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
 
 
     @Override
-    public void onItemClickListener(int pageIndex, int position, Movie movie) {
+    public void onItemClickListener( int position, Movie movie) {
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(AppConstants.INTENT_KEY_MOVIE_DETAIL, movie);
@@ -61,6 +62,14 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
         if (isMultiPane) {
 
             MovieDetailFragment fragment = new MovieDetailFragment();
+            fragment.setMovieDetailCallbacks(new MovieDetailFragment.MovieDetailCallbacks() {
+                @Override
+                public void onFavouriteStateChanged() {
+                    if(movieListFragment != null){
+                        movieListFragment.onFavoriteDataChanged();
+                    }
+                }
+            });
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, fragment).commit();
 

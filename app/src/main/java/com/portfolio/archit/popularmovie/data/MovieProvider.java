@@ -14,12 +14,11 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 @ContentProvider(authority = MovieProvider.AUTHORITY, database = MovieDatabase.class)
 public final class MovieProvider {
 
-    public static final String AUTHORITY =
-            "com.portfolio.archit.popularmovie.data.MovieProvider";
+    public static final String AUTHORITY = "com.portfolio.archit.popularmovie.data.MovieProvider";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     interface Path {
-        String FAVOURITE = "favourite";
+        String FAVORITES = "favourites";
     }
 
     private static Uri buildUri(String... paths) {
@@ -30,21 +29,22 @@ public final class MovieProvider {
         return builder.build();
     }
 
-    @TableEndpoint(table = MovieDatabase.FAVOURITES)
-    public static class Favourites {
+    @TableEndpoint(table = MovieDatabase.FAVORITES)
+    public static class Favorites {
+
         @ContentUri(
-                path = Path.FAVOURITE,
-                type = ContentResolver.CURSOR_DIR_BASE_TYPE + Path.FAVOURITE)
-        public static final Uri CONTENT_URI = buildUri(Path.FAVOURITE);
+                path = Path.FAVORITES,
+                type = ContentResolver.CURSOR_DIR_BASE_TYPE + "/favorite")
+        public static final Uri CONTENT_URI = buildUri(Path.FAVORITES);
 
         @InexactContentUri(
                 name = "MOVIE_ID",
-                path = Path.FAVOURITE + "/#",
-                type = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + Path.FAVOURITE,
-                whereColumn = MovieFavouritesColumns._ID,
+                path = Path.FAVORITES + "/#",
+                type = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/favorite",
+                whereColumn = MovieFavoritesColumns.MOVIE_ID,
                 pathSegment = 1)
         public static Uri withId(long id) {
-            return buildUri(Path.FAVOURITE, String.valueOf(id));
+            return buildUri(Path.FAVORITES, String.valueOf(id));
         }
     }
 

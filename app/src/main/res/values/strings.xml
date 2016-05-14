@@ -12,22 +12,28 @@
     <string-array name="sort_properties_values">
         <item>/movie/popular</item>
         <item>/movie/top_rated</item>
+        <item>favorite</item>
     </string-array>
 
     <string-array name="sort_properties">
         <item>Popular</item>
         <item>Top rated</item>
+        <item>Favorite</item>
+
     </string-array>
 
     <string name="title_activity_splash">SplashActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="show_reviews">Show Reviews</string>
     <string name="no_reviews">No reviews available</string>
 
 
     <string name="trailer">Trailers</string>
+    <string name="no_movie_selected">No movie selected</string>
+    <string name="no_favorites_found">No favorites found</string>
+    <string name="no_movies_found">No movies found</string>
+    <string name="no_trailers_found">No trailers found</string>
+
 
     <!-- Account type (for sync-adapter authenticator) -->
     <!-- SyncAdapter related -->

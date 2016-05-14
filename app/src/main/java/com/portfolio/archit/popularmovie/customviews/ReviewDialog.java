@@ -113,7 +113,7 @@ public class ReviewDialog extends DialogFragment {
             }
 
             @Override
-            public void onGridItemSelected(int position, Review model) {
+            public void onRecyclerItemSelected(int position, Review model) {
 
             }
 

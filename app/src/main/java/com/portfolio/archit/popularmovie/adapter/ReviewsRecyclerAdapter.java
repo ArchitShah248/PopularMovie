@@ -68,7 +68,7 @@ public class ReviewsRecyclerAdapter extends RecyclerView.Adapter<ReviewsRecycler
             @Override
             public void onClick(View v) {
                 if (onItemClickedListener != null) {
-                    onItemClickedListener.onGridItemSelected(position, review);
+                    onItemClickedListener.onRecyclerItemSelected(position, review);
                 }
             }
         });

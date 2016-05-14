@@ -11,7 +11,7 @@ public class MovieDatabase {
 
     public static final int VERSION = 1;
 
-    @Table(MovieFavouritesColumns.class)
-    public static final String FAVOURITES = "favourites";
+    @Table(MovieFavoritesColumns.class)
+    public static final String FAVORITES = "favorites";
 
 }

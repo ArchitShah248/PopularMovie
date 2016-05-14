@@ -39,6 +39,19 @@
             android:layout_below="@id/rlSortingContainer">
 
         </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tvNoMovieFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/no_movies_found"
+            android:visibility="gone"
+            android:textStyle="bold"/>
+
     </RelativeLayout>
 
 </FrameLayout>

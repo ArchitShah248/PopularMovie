@@ -35,12 +35,12 @@
             </intent-filter>
         </activity>
 
-        <!--        &lt;!&ndash;suppress AndroidDomInspection &ndash;&gt;
-                <provider
-                    android:name="com.portfolio.archit.popularmovie.data.MovieProvider"
-                    android:authorities="com.portfolio.archit.popularmovie"
-                    android:exported="false"
-                    android:syncable="true"/>-->
+
+        <provider
+            android:name="com.portfolio.archit.popularmovie.data.generated.MovieProvider"
+            android:authorities="com.portfolio.archit.popularmovie.data.MovieProvider"
+            android:exported="false"
+            android:syncable="true"/>
 
     </application>
 

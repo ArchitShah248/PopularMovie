@@ -16,9 +16,11 @@ This is Project 1 & Project 2 of Udacity's Android Developer Nanodegree.
 Screenshots
 -----------
 
-<img width="40%" src="screenshots/image1.png" />
-<img width="40%" src="screenshots/image2.png" />
-<img width="80%" src="screenshots/image3.png" />
+<img width="30%" src="screenshots/image1.png" />
+<img width="30%" src="screenshots/image2.png" />
+<img width="30%" src="screenshots/image3.png" />
+<img width="35%" src="screenshots/image4.png" />
+<img width="50%" src="screenshots/image5.png" />
 
 
 Developer setup

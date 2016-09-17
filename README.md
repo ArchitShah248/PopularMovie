@@ -13,6 +13,14 @@ This is Project 1 & Project 2 of Udacity's Android Developer Nanodegree.
 - Material design support
 - Phone and tablet resolution support
 
+Screenshots
+-----------
+
+<img width="40%" src="screenshots/image1.png" />
+<img width="40%" src="screenshots/image2.png" />
+<img width="80%" src="screenshots/image3.png" />
+
+
 Developer setup
 ---------------
 
